@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          Tarefas Domésticas
+          HouseWork
         </q-toolbar-title>
 
         <div>Alexandre</div>
@@ -26,10 +26,7 @@
       content-class="bg-grey-1"
     >
       <q-list>
-        <q-item-label
-          header
-          class="text-grey-8"
-        >
+        <q-item-label header class="text-grey-8">
           Menu de navegação
         </q-item-label>
         <EssentialLink
@@ -51,10 +48,16 @@ import EssentialLink from 'components/EssentialLink.vue'
 
 const linksData = [
   {
+    title: 'Home',
+    caption: 'Página Inicial',
+    icon: 'local_grocery_store',
+    link: '/'
+  },
+  {
     title: 'Supermercado',
     caption: 'Anotar itens em falta',
     icon: 'local_grocery_store',
-    link: '/'
+    link: 'Supermercado'
   }
 ]
 
