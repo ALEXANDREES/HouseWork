@@ -1,136 +1,153 @@
 <template>
-  <div class="q-pa-md q-gutter-sm">
+  <q-page>
     <div class="row justify-center text-h5" style="color: green">
       Agendamentos
     </div>
-    <div v-if="novoAgendamentoIniciado === false">
-      <q-list bordered separator>
-        <q-item v-for="(item, index) in listaAgendamentos" :key="index">
-          <q-item-section>
-            <q-item-label v-html="item.usuario" />
-            <q-item-label caption v-html="item.descricao" />
-            <!-- Formatação de data quando a data for salva como timestamp -->
-            <q-item-label v-html="(new Date(item.data.seconds * 1000).toLocaleDateString())"/>
-            <div class="row justify-end">
-              <q-btn
-                round
-                class="q-ma-sm"
-                color="positive"
-                icon="done_outline"
-                size="10px"
-                @click="marcarConcluido(index, item.id)"
-              />
-              <q-btn
-                round
-                class="q-ma-sm"
-                color="negative"
-                icon="delete"
-                size="10px"
-                @click="removerAgendamento(index, item.id)"
-              />
-            </div>
-          </q-item-section>
-        </q-item>
-
-        <div class="flex flex-center" v-if="listaAgendamentos.length == 0">
-          <h6>Não a agendamentos lançados!</h6>
-        </div>
-      </q-list>
-
-      <q-btn
-        round
-        class="q-ma-sm"
-        color="blue"
-        icon="post_add"
-        size="15px"
-        @click="iniciarNovoAgendamento()"
-      />
-    </div>
-
-    <div class="row justify-end" v-else>
-      <q-input
-        rounded
-        outlined
-        v-model="dadosInformados.usuarioDigitado"
-        label="Usuário"
-        class="col-md-12 col-sm-12 col-xs-12 q-mb-md q-mt-md"
-        color="green-5"
-        clearable
-        clear-icon="close"
-      >
-        <template v-slot:prepend>
-          <q-icon name="person" />
-        </template>
-      </q-input>
-
-      <q-input
-        rounded
-        outlined
-        v-model.number="dadosInformados.descricaoDigitada"
-        label="Descrição"
-        class="col-md-12 col-sm-12 col-xs-12 q-mb-md"
-        color="green-5"
-        clearable
-        clear-icon="close"
-      >
-        <template v-slot:prepend>
-          <q-icon name="person" />
-        </template>
-      </q-input>
-
-      <q-input
-        rounded
-        outlined
-        v-model="dadosInformados.dataDigitada"
-        label="Data do agendamento"
-        mask="date"
-        class="col-md-12 col-sm-12 col-xs-12 q-mb-md"
-      >
-        <template v-slot:append>
-          <q-icon name="event" class="cursor-pointer">
-            <q-popup-proxy
-              ref="qDateProxy"
-              transition-show="scale"
-              transition-hide="scale"
-            >
-              <q-date v-model="dadosInformados.dataDigitada">
-                <div class="row items-center justify-end">
-                  <q-btn v-close-popup label="Close" color="primary" flat />
+    <q-page-container>
+      <div class="q-px-md">
+        <div v-if="novoAgendamentoIniciado === false">
+          <q-list bordered separator>
+            <q-item v-for="(item, index) in listaAgendamentos" :key="index">
+              <q-item-section>
+                <q-item-label v-html="item.usuario" />
+                <q-item-label caption v-html="item.descricao" />
+                <!-- Formatação de data quando a data for salva como timestamp -->
+                <q-item-label v-html="(new Date(item.data.seconds * 1000).toLocaleDateString())"/>
+                <div class="row justify-end">
+                  <q-btn
+                    round
+                    class="q-ma-sm"
+                    color="positive"
+                    icon="done_outline"
+                    size="10px"
+                    @click="marcarConcluido(index, item.id)"
+                  />
+                  <q-btn
+                    round
+                    class="q-ma-sm"
+                    color="negative"
+                    icon="delete"
+                    size="10px"
+                    @click="removerAgendamento(index, item.id)"
+                  />
                 </div>
-              </q-date>
-            </q-popup-proxy>
-          </q-icon>
-        </template>
-      </q-input>
+              </q-item-section>
+            </q-item>
 
-      <div class="row justify-between">
-        <q-btn
-          round
-          class="q-ma-sm"
-          color="positive"
-          icon="done"
-          size="15px"
-          @click="novoAgendamento()"
-        />
+            <div class="flex flex-center" v-if="listaAgendamentos.length == 0">
+              <h6>Não a agendamentos lançados!</h6>
+            </div>
+          </q-list>
 
-        <q-btn
-          round
-          class="q-ma-sm"
-          color="negative"
-          icon="close"
-          size="15px"
-          @click="cancelarNovoAgendamento()"
-        />
+          <q-btn
+            round
+            class="q-ma-sm"
+            color="blue"
+            icon="post_add"
+            size="15px"
+            @click="iniciarNovoAgendamento()"
+          />
+        </div>
+
+        <div class="row justify-end" v-else>
+          <q-input
+            rounded
+            outlined
+            v-model="dadosInformados.usuarioDigitado"
+            label="Usuário"
+            class="col-md-12 col-sm-12 col-xs-12 q-mb-md q-mt-md"
+            color="green-5"
+            clearable
+            clear-icon="close"
+          >
+            <template v-slot:prepend>
+              <q-icon name="person" />
+            </template>
+          </q-input>
+
+          <q-input
+            rounded
+            outlined
+            v-model.number="dadosInformados.descricaoDigitada"
+            label="Descrição"
+            class="col-md-12 col-sm-12 col-xs-12 q-mb-md"
+            color="green-5"
+            clearable
+            clear-icon="close"
+          >
+            <template v-slot:prepend>
+              <q-icon name="description" />
+            </template>
+          </q-input>
+
+          <q-input
+            rounded
+            outlined
+            v-model="dadosInformados.dataDigitada"
+            label="Data do agendamento"
+            mask="date"
+            class="col-md-12 col-sm-12 col-xs-12 q-mb-md"
+          >
+            <template v-slot:append>
+              <q-icon name="event" class="cursor-pointer">
+                <q-popup-proxy
+                  ref="qDateProxy"
+                  transition-show="scale"
+                  transition-hide="scale"
+                >
+                  <q-date v-model="dadosInformados.dataDigitada">
+                    <div class="row items-center justify-end">
+                      <q-btn v-close-popup label="Close" color="primary" flat />
+                    </div>
+                  </q-date>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+
+          <div class="row justify-between">
+            <q-btn
+              round
+              class="q-ma-sm"
+              color="positive"
+              icon="done"
+              size="15px"
+              @click="novoAgendamento()"
+            />
+
+            <q-btn
+              round
+              class="q-ma-sm"
+              color="negative"
+              icon="close"
+              size="15px"
+              @click="cancelarNovoAgendamento()"
+            />
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
+    </q-page-container>
+    <q-footer elevated class="row justify-between">
+      <q-toolbar>
+        <q-toolbar-title>HouseWork</q-toolbar-title>
+        <q-btn
+          round
+          color="negative"
+          icon="logout"
+          size="12px"
+          @click="sairSistema()"
+        />
+      </q-toolbar>
+    </q-footer>
+  </q-page>
 </template>
 
 <script>
 import { db } from 'boot/firebase'
+import firebase from 'firebase'
 
 export default {
-  name: 'PageIndex',
+  name: 'Principal',
   data () {
     return {
       listaAgendamentos: [],
@@ -232,12 +249,9 @@ export default {
         })
         .onOk(async () => {
           try {
-            await db
-              .collection('agendamento')
-              .doc(id)
-              .update({
-                estado: true
-              })
+            await db.collection('agendamento').doc(id).update({
+              estado: true
+            })
 
             this.listaAgendamentos.splice(index, 1)
 
@@ -268,10 +282,7 @@ export default {
         })
         .onOk(async () => {
           try {
-            await db
-              .collection('agendamento')
-              .doc(id)
-              .delete()
+            await db.collection('agendamento').doc(id).delete()
 
             this.listaAgendamentos.splice(index, 1)
 
@@ -297,7 +308,19 @@ export default {
       this.dadosInformados.dataDigitada = ''
       this.dadosInformados.estadoDigitado = false
       this.novoAgendamentoIniciado = false
+    },
+    async sairSistema () {
+      await firebase.auth().signOut()
+      this.$router.push({ path: '/' }).catch(e => {})
     }
   }
 }
 </script>
+
+<style lang="scss">
+  .div-sair {
+    height: 100%;
+    width: 100%;
+    background-color: $red;
+  }
+</style>

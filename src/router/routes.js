@@ -1,16 +1,20 @@
-
 const routes = [
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'),
+    component: () => import('layouts/LayoutLogin.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') },
-      { path: 'Supermercado', component: () => import('pages/Supermercado.vue') }
+      { path: '/', component: () => import('src/pages/Login.vue') },
+      { path: 'Usuario', component: () => import('src/pages/Usuario.vue') }
     ]
   },
-
-  // Always leave this as last one,
-  // but you can also remove it
+  {
+    path: '/',
+    component: () => import('src/layouts/LayoutTelas.vue'),
+    children: [
+      { path: 'Principal', meta: { authRequired: true }, component: () => import('src/pages/Principal.vue') },
+      { path: 'Supermercado', meta: { authRequired: true }, component: () => import('pages/Supermercado.vue') }
+    ]
+  },
   {
     path: '*',
     component: () => import('pages/Error404.vue')

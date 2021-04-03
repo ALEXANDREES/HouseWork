@@ -14,8 +14,6 @@
         <q-toolbar-title>
           HouseWork
         </q-toolbar-title>
-
-        <div>Alexandre</div>
       </q-toolbar>
     </q-header>
 
@@ -50,8 +48,8 @@ const linksData = [
   {
     title: 'Home',
     caption: 'Página Inicial',
-    icon: 'local_grocery_store',
-    link: '/'
+    icon: 'home',
+    link: 'Principal'
   },
   {
     title: 'Supermercado',
@@ -62,7 +60,7 @@ const linksData = [
 ]
 
 export default {
-  name: 'MainLayout',
+  name: 'LayoutTelas',
   components: { EssentialLink },
   data () {
     return {
