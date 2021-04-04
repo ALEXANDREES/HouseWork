@@ -4,7 +4,6 @@ import Vuex from 'vuex'
 // import example from './module-example'
 
 Vue.use(Vuex)
-
 /*
  * If not building with SSR mode, you can
  * directly export the Store instantiation;
@@ -16,8 +15,20 @@ Vue.use(Vuex)
 
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
-    modules: {
-      // example
+    state: {
+      urlFotoUsuario: ''
+    },
+    mutations: {
+      setFotoUsuario (state, url) {
+        state.urlFotoUsuario = url
+      }
+    },
+    actions: {},
+    modules: {},
+    getters: {
+      getUrlFotoUsuario (state) {
+        return state.urlFotoUsuario
+      }
     },
 
     // enable strict mode (adds overhead!)

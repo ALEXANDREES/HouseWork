@@ -56,6 +56,7 @@
 
 <script>
 import firebase from 'firebase'
+const referenciaStorage = firebase.storage().ref('imagens usuarios')
 
 export default {
   name: 'Login',
@@ -63,20 +64,31 @@ export default {
     return {
       dadosInformados: {
         emailDigitado: '',
-        senhaDigitada: ''
+        senhaDigitada: '',
+        idUsuario: ''
       }
     }
   },
   methods: {
+    async recuperarImagem () {
+      await referenciaStorage.child(this.dadosInformados.idUsuario).getDownloadURL().then(url => {
+        this.$store.commit('setFotoUsuario', url)
+        console.log('URL LOGIN', url)
+      }).catch()
+    },
     async realizarLogin () {
       const instanciaVue = this
       try {
         if (this.dadosInformados.emailDigitado !== '' && this.dadosInformados.senhaDigitada !== '' && this.dadosInformados.confirmacaoSenhaDigitada !== '') {
-          await firebase.auth().signInWithEmailAndPassword(this.dadosInformados.emailDigitado, this.dadosInformados.senhaDigitada).then(() => {
-            instanciaVue.$router.push({ path: '/Principal' }).catch(e => {})
+          await firebase.auth().signInWithEmailAndPassword(this.dadosInformados.emailDigitado, this.dadosInformados.senhaDigitada).then(user => {
+            this.dadosInformados.idUsuario = user.user.uid
           })
 
+          this.recuperarImagem()
+
           this.limparDados()
+
+          await instanciaVue.$router.push({ path: '/Principal' }).catch(e => {})
         } else {
           this.$q.notify({
             message: 'Não foi possível realizar o login, verifique os campos e tente novamente',

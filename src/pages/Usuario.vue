@@ -2,6 +2,21 @@
   <q-page class="div-fundo column justify-center items-center">
     <div>Cadastro de novo usuário</div>
     <div class="row justify-between">
+
+      <q-file
+        color="green-5"
+        rounded
+        outlined
+        accept="image/*"
+        v-model="dadosInformados.fotoUsuario"
+        label="Selecione sua foto de perfil"
+        class="col-xs-12 q-mt-md q-px-md"
+      >
+        <template v-slot:prepend>
+          <q-icon name="person" />
+        </template>
+      </q-file>
+
       <q-input
         rounded
         outlined
@@ -54,7 +69,6 @@
         icon="done"
         size="15px"
         @click="novoUsuario()"
-        to="/"
       />
 
       <q-btn
@@ -72,6 +86,7 @@
 
 <script>
 import firebase from 'firebase'
+const referenciaStorage = firebase.storage().ref('imagens usuarios')
 
 export default {
   name: 'Login',
@@ -80,18 +95,33 @@ export default {
       listaUsuarios: [],
       usuarioLogando: false,
       dadosInformados: {
+        fotoUsuario: [],
         emailDigitado: '',
         senhaDigitada: '',
-        confirmacaoSenhaDigitada: ''
+        confirmacaoSenhaDigitada: '',
+        idUsuarioCadastrado: ''
       }
     }
   },
   methods: {
+    async salvarImagem () {
+      const instanciaVue = this
+      await referenciaStorage.child(this.idUsuarioCadastrado).put(this.dadosInformados.fotoUsuario)
+      await referenciaStorage.child(this.idUsuarioCadastrado).getDownloadURL().then(url => {
+        this.$store.commit('setFotoUsuario', url)
+        console.log('URL USUARIO', url)
+      }).catch()
+      await instanciaVue.$router.push({ path: '/Principal' }).catch(e => {})
+    },
     async novoUsuario () {
       try {
         if (this.dadosInformados.emailDigitado !== '' && this.dadosInformados.senhaDigitada !== '' && this.dadosInformados.confirmacaoSenhaDigitada !== '') {
           if (this.dadosInformados.senhaDigitada === this.dadosInformados.confirmacaoSenhaDigitada) {
-            await firebase.auth().createUserWithEmailAndPassword(this.dadosInformados.emailDigitado, this.dadosInformados.senhaDigitada)
+            await firebase.auth().createUserWithEmailAndPassword(this.dadosInformados.emailDigitado, this.dadosInformados.senhaDigitada).then(user => {
+              this.idUsuarioCadastrado = user.user.uid
+            })
+
+            this.salvarImagem()
 
             this.listaUsuarios.push({
               email: this.dadosInformados.emailDigitado,
@@ -135,9 +165,11 @@ export default {
       }
     },
     limparDados () {
+      this.dadosInformados.urlFotoUsuario = ''
       this.dadosInformados.emailDigitado = ''
       this.dadosInformados.senhaDigitada = ''
       this.dadosInformados.confirmacaoSenhaDigitada = ''
+      this.dadosInformados.idUsuarioCadastrado = ''
     }
   }
 }

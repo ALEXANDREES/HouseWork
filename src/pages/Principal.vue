@@ -1,9 +1,14 @@
 <template>
   <q-page>
-    <div class="row justify-center text-h5" style="color: green">
-      Agendamentos
+    <div class="row justify-end q-mr-md q-mt-sm">
+      <q-avatar>
+        <img src="" id="imagemUsuario">
+      </q-avatar>
     </div>
     <q-page-container>
+    <div class="row justify-center text-h5 q-mb-md" style="color: green">
+      Agendamentos
+    </div>
       <div class="q-px-md">
         <div v-if="novoAgendamentoIniciado === false">
           <q-list bordered separator>
@@ -156,15 +161,26 @@ export default {
         usuarioDigitado: '',
         descricaoDigitada: '',
         estadoDigitado: false,
-        dataDigitada: ''
+        dataDigitada: '',
+        urlFotoUsuarioCapturada: ''
       }
     }
   },
-  created () {
-    this.listarAgendamento()
+  async created () {
+    await this.listarAgendamento()
   },
-  mounted () {},
+  mounted () {
+    setTimeout(() => this.recuperaFotoUsuario(), 1000)
+  },
+  async updated () {
+    await this.recuperaFotoUsuario()
+  },
   methods: {
+    async recuperaFotoUsuario () {
+      this.dadosInformados.urlFotoUsuarioCapturada = await this.$store.getters.getUrlFotoUsuario
+      console.log('URL QUE CHEGOU NA PRINCIPAL', this.dadosInformados.urlFotoUsuarioCapturada)
+      document.getElementById('imagemUsuario').src = [this.dadosInformados.urlFotoUsuarioCapturada]
+    },
     iniciarNovoAgendamento () {
       this.novoAgendamentoIniciado = true
     },
