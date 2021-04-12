@@ -7,3 +7,4 @@ Aplicação para a gerência da casa
     * quasar dev (Para executar o projeto)
     * yarn run lint (Para executar a função lint nos arquivos)
     * quasar build (Construir a aplicação para produção)
+    * pronto para a utilização
